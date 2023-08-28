@@ -44,9 +44,6 @@ app.get("/deezer/search/", async (req, res) => {
   }
 });
 
-server.keepAliveTimeout = 120 * 1000;
-server.headersTimeout = 120 * 1000;
-
 const html = `
 <!DOCTYPE html>
 <html>
