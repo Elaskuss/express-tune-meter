@@ -4,6 +4,29 @@ const port = process.env.PORT || 3001;
 
 app.get("/", (req, res) => res.type('html').send(html));
 
+app.get("/deezer/search/", async (req, res) => {
+  const artist = req.query.artist;
+  const track = req.query.track;
+
+  if (!artist || !track) {
+      return res
+          .status(400)
+          .json({ error: "Missing artist or track query parameters" });
+  }
+
+  const deezerApiUrl = `https://api.deezer.com/search?q=artist:"${artist}"track:"${track}"`;
+
+  try {
+      const response = await fetch(deezerApiUrl);
+      const data = await response.json();
+      res.json(data);
+  } catch (error) {
+      res.status(500).json({
+          error: "An error occurred while fetching data from Deezer.",
+      });
+  }
+});
+
 const server = app.listen(port, () => console.log(`Example app listening on port ${port}!`));
 
 server.keepAliveTimeout = 120 * 1000;
